@@ -4,7 +4,6 @@ const {
   userProfileService,
   updateProfileService,
 } = require('../services/user.services.js');
-const catchAsync = require('../utils/catchAsync.js');
 
 const registerUser = async (req, res, next) => {
   const { email, password, name } = req.body;
