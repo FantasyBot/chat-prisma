@@ -54,11 +54,10 @@ const userRegistationService = async (
 // PUBLIC
 const userLoginService = async (req, res, next, { email, password }) => {
   try {
-    if (!email) {
+    if (!email || !password) {
       res.status(404);
       return next({ message: 'Enter all input values...' });
     }
-
     const userInfo = await user.findUnique({
       where: {
         email,

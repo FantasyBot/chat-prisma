@@ -1,11 +1,10 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  text-align: center;
+  /* box-sizing: border-box; */
 }
 
-button {
+/* button {
   background-color: #fff;
   border: none;
   margin: 15px 32px;
@@ -27,4 +26,4 @@ input {
 form {
   display: flex;
   flex-direction: column;
-}
+} */

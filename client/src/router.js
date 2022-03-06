@@ -1,16 +1,9 @@
-import HomePage from './pages/Homepage';
 import Registerpage from './pages/Registerpage';
 import Loginpage from './pages/Loginpage';
 import Profilepage from './pages/Profilepage';
 import { Routes, Route } from 'react-router-dom';
 
 const routes = [
-  {
-    id: 0,
-    // element: <HomePage />,
-    element: <HomePage />,
-    path: '/',
-  },
   {
     id: 1,
     path: '/register',
@@ -19,7 +12,7 @@ const routes = [
   {
     id: 2,
     element: <Loginpage />,
-    path: '/login',
+    path: '/',
   },
   {
     id: 3,
