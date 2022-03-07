@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import ImageComp from '../components/ImageComp';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
   Avatar,
@@ -13,7 +13,12 @@ import {
   ThemeProvider,
   createTheme,
   Paper,
+  Alert,
 } from '@mui/material';
+import { Navigate } from 'react-router-dom';
+import { entryUser } from '../store/actions/entryUsers';
+import { resetApiCallState } from '../store/slices/apiCall';
+import { callFailed } from '../store/slices/apiCall';
 
 const theme = createTheme();
 
@@ -21,31 +26,29 @@ const Loginpage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
+
+  const { name } = useSelector((state) => state.user);
+  const { message } = useSelector((state) => state.apiCall);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetApiCallState());
+    };
+  }, [dispatch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      console.log({
-        message: 'Please enter all input values...',
-      });
+      dispatch(callFailed('Please enter all input values...'));
     } else {
-      e.preventDefault();
-      try {
-        const { data } = await axios({
-          method: 'post',
-          url: '/api/user/login',
-          data: { email, password },
-        });
-
-        console.log(data);
-      } catch (error) {
-        console.log({
-          message: error.response.data.message
-            ? error.response.data.message
-            : error.message,
-        });
-      }
+      dispatch(entryUser('POST', '/api/user/login', { email, password }));
     }
   };
+
+  if (name) {
+    return <Navigate replace to="/main" />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -79,6 +82,11 @@ const Loginpage = () => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            {message && (
+              <Alert sx={{ mb: -2 }} severity="error">
+                {message}
+              </Alert>
+            )}
             <Box
               component="form"
               onSubmit={handleSubmit}

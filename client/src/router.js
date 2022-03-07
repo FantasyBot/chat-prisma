@@ -1,6 +1,7 @@
 import Registerpage from './pages/Registerpage';
 import Loginpage from './pages/Loginpage';
 import Profilepage from './pages/Profilepage';
+import Main from './pages/Main';
 import { Routes, Route } from 'react-router-dom';
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     id: 3,
     element: <Profilepage />,
     path: '/profile',
+  },
+  {
+    id: 4,
+    element: <Main />,
+    path: '/main',
   },
   {
     id: 100,

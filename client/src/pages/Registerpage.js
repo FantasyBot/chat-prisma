@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import ImageComp from '../components/ImageComp';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { entryUser } from '../store/actions/entryUsers';
+import { resetApiCallState } from '../store/slices/apiCall';
+import { callFailed } from '../store/slices/apiCall';
+
 import {
   Button,
   Avatar,
@@ -13,6 +18,7 @@ import {
   ThemeProvider,
   createTheme,
   Paper,
+  Alert,
 } from '@mui/material';
 
 const theme = createTheme();
@@ -22,30 +28,31 @@ const Registerpage = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
+  const dispatch = useDispatch();
+
+  const { name: userName } = useSelector((state) => state.user);
+  const { message } = useSelector((state) => state.apiCall);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetApiCallState());
+    };
+  }, [dispatch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password || !name) {
-      console.log({
-        message: 'Please enter all input values..',
-      });
+      dispatch(callFailed('Please enter all input values...'));
     } else {
-      try {
-        const { data } = await axios({
-          method: 'post',
-          url: '/api/user/register',
-          data: { name, email, password },
-        });
-
-        console.log(data);
-      } catch (error) {
-        console.log({
-          message: error.response.data.message
-            ? error.response.data.message
-            : error.message,
-        });
-      }
+      dispatch(
+        entryUser('POST', '/api/user/register', { name, email, password })
+      );
     }
   };
+
+  if (userName) {
+    return <Navigate replace to="/main" />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,6 +85,11 @@ const Registerpage = () => {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
+            {message && (
+              <Alert sx={{ mb: -2 }} severity="error">
+                {message}
+              </Alert>
+            )}
             <Box
               component="form"
               noValidate
