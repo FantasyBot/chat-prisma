@@ -19,6 +19,7 @@ import {
   createTheme,
   Paper,
   Alert,
+  Input,
 } from '@mui/material';
 
 const theme = createTheme();
@@ -27,6 +28,7 @@ const Registerpage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  // const [file, setFile] = useState('');
 
   const dispatch = useDispatch();
 
@@ -44,8 +46,33 @@ const Registerpage = () => {
     if (!email || !password || !name) {
       dispatch(callFailed('Please enter all input values...'));
     } else {
+      // const headers = {
+      //   "Content-Type": "application/json",
+      //   Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+      // };
+      // const { data } = await axios({
+      //   method: 'POST',
+      //   url: 'api/user/media/upload',
+      //   data: {
+      //     filename: file.name,
+      //     mediable_type: file.type,
+      //   },
+      // });
+
+      // const dataUrl = await axios({
+      //   method: 'PUT',
+      //   url: data.signedUrl,
+      //   data: {
+      //     file,
+      //   },
+      // });
+
       dispatch(
-        entryUser('POST', '/api/user/register', { name, email, password })
+        entryUser('POST', '/api/user/register', {
+          name,
+          email,
+          password,
+        })
       );
     }
   };
@@ -137,6 +164,15 @@ const Registerpage = () => {
                     value={password}
                   />
                 </Grid>
+                {/* <Grid item xs={12}>
+                  <Input
+                    color="primary"
+                    accept=".jpeg, .jpg, .png"
+                    type="file"
+                    required={true}
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </Grid> */}
               </Grid>
               <Button
                 type="submit"

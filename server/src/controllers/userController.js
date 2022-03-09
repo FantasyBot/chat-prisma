@@ -5,10 +5,15 @@ const {
   updateProfileService,
 } = require('../services/user.services.js');
 
+//CONTROLLER SHOULD BE MODIFIED! - req, res, next in params
 const registerUser = async (req, res, next) => {
   const { email, password, name } = req.body;
 
-  userRegistationService(req, res, next, { email, password, name });
+  userRegistationService(req, res, next, {
+    email,
+    password,
+    name,
+  });
 };
 
 const loginUser = async (req, res, next) => {
@@ -30,4 +35,9 @@ const profileUpdate = async (req, res, next) => {
   updateProfileService(req, res, next, { name, email, password, tokenEmail });
 };
 
-module.exports = { registerUser, loginUser, userProfile, profileUpdate };
+module.exports = {
+  registerUser,
+  loginUser,
+  userProfile,
+  profileUpdate,
+};

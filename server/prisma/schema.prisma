@@ -14,5 +14,16 @@ model User {
   password      String   @db.VarChar(255)
   registered_at DateTime @default(now())
 
+  Media Media[]
   @@map(name: "users")
+}
+
+model Media {
+  id         Int    @id @default(autoincrement())
+  media_type String
+  path       String
+  author     User   @relation(fields: [authorId], references: [id])
+  authorId   Int
+
+  @@map(name: "media")
 }

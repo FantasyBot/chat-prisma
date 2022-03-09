@@ -6,6 +6,7 @@ const token = localStorage.getItem('token');
 const initialState = {
   name: token ? jwt_decode(token).name : '',
   email: token ? jwt_decode(token).email : '',
+  image_url: '',
 };
 
 const userSlice = createSlice({
@@ -31,6 +32,7 @@ const userSlice = createSlice({
       localStorage.removeItem('token');
       user.name = '';
       user.email = '';
+      user.image_url = '';
     },
 
     userGotProfileInfo: (user, action) => {
