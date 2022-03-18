@@ -16,14 +16,19 @@ export const entryUser =
         ...(headers && { headers }),
       });
 
-      const decodedToken = jwt_decode(data.token);
 
+      const dbURL = data?.media[0]?.image_url;
+      if(dbURL) {
+        localStorage.setItem('image_url', dbURL);
+      }
+      
+      const decodedToken = jwt_decode(data.token);
       const { name, email } = decodedToken;
 
       dispatch(callSuccess({ message: 'Successful!' }));
-      dispatch(userLoggedIn({ name, email }));
+      dispatch(userLoggedIn({ name, email,  image_url: dbURL}));
 
-      localStorage.setItem('token', JSON.stringify(data.token));
+      localStorage.setItem('token', data.token);
     } catch (error) {
       dispatch(
         callFailed(

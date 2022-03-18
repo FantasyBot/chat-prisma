@@ -18,6 +18,7 @@ import {
 import { postMedia } from '../store/actions/postMedia';
 import { callFailed } from '../store/slices/apiCall';
 
+
 const theme = createTheme();
 
 const Main = () => {
@@ -26,21 +27,23 @@ const Main = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { name } = useSelector((state) => state.user);
+  const { name, image_url: reduxURL } = useSelector((state) => state.user);
+  const { callSuccess } = useSelector((state) => state.apiCall);
+   
+  if(callSuccess) {
+    var image_url = localStorage.getItem('image_url');
+  }
 
   if (!name) {
     return <Navigate replace to="/" />;
   }
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (!file) {
       dispatch(callFailed('Please select file'));
     } else {
-      dispatch(
-        postMedia('POST', '/api/user/media/upload', {
-          file,
-        })
-      );
+        dispatch(postMedia('POST', '/api/user/media/upload', { file }));
     }
   };
 
@@ -49,6 +52,7 @@ const Main = () => {
     dispatch(resetApiCallState());
     navigate('/');
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -71,8 +75,8 @@ const Main = () => {
               <Grid item xs={12}>
                 <Input
                   color="primary"
-                  accept=".jpeg, .jpg, .png"
                   type="file"
+                  inputProps={{ accept: 'image/png, image/gif, image/jpeg' }}
                   required={true}
                   onChange={(e) => setFile(e.target.files[0])}
                 />
@@ -97,6 +101,7 @@ const Main = () => {
               Log out
             </Button>
           </Box>
+          {(image_url || reduxURL) && <img alt="test" src={image_url || reduxURL}/> }
         </Box>
       </Container>
     </ThemeProvider>

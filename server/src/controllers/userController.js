@@ -5,7 +5,6 @@ const {
   updateProfileService,
 } = require('../services/user.services.js');
 
-//CONTROLLER SHOULD BE MODIFIED! - req, res, next in params
 const registerUser = async (req, res, next) => {
   const { email, password, name } = req.body;
 
@@ -18,7 +17,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-
+  
   userLoginService(req, res, next, { email, password });
 };
 

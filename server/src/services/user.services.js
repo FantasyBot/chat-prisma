@@ -36,6 +36,7 @@ const userRegistationService = async (
       data: { email, name, password: hashedPassword },
     });
 
+    res.status(201);
     res.json({
       message: 'success',
       token: generateToken({
@@ -58,9 +59,13 @@ const userLoginService = async (req, res, next, { email, password }) => {
       res.status(404);
       return next({ message: 'Enter all input values...' });
     }
+
     const userInfo = await user.findUnique({
       where: {
         email,
+      },
+      include: {
+        Media: true,
       },
     });
 
@@ -83,8 +88,10 @@ const userLoginService = async (req, res, next, { email, password }) => {
         name: userInfo.name,
         email: userInfo.email,
       }),
+      media: userInfo.Media
     });
   } catch (err) {
+    console.log(err)
     res.status(406);
     return next({ message: 'User login failed!', stack: err.message });
   }
@@ -121,7 +128,7 @@ const updateProfileService = async (
 
     // BEST PERFORMANCE :)
     let newPass;
-    if (password.length === 0) {
+    if (!password || password.length === 0) {
       newPass = userInfo.password;
     } else {
       let encryptedPassword = await bcrypt.compare(password, userInfo.password); //true if the password match
@@ -153,7 +160,7 @@ const updateProfileService = async (
       }),
     });
   } catch (err) {
-    res.status(406);
+    res.status(400);
     return next({ message: 'User profile update failed!', stack: err.message });
   }
 };

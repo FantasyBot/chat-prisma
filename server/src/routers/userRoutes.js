@@ -6,7 +6,6 @@ const {
   userProfile,
   profileUpdate,
 } = require('../controllers/userController.js');
-// const { protect } = require('../services/user.service.js');
 const router = Router();
 
 router.post('/register', registerUser);

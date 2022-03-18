@@ -20,10 +20,9 @@ model User {
 
 model Media {
   id         Int    @id @default(autoincrement())
-  media_type String
-  path       String
-  author     User   @relation(fields: [authorId], references: [id])
-  authorId   Int
+  image_url  String
+  author     User   @relation(fields: [author_id], references: [id])
+  author_id   Int
 
   @@map(name: "media")
 }
